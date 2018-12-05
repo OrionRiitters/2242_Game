@@ -19,6 +19,7 @@ public abstract class Entity { // This abstract class will contain Vessel and Pr
         this.collideDamage = collideDamage;
         this.sprite = sprite;
         this.active = active;
+        this.speed = speed;
     }
     public int getMinX() {
         return minX;

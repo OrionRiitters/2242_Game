@@ -33,17 +33,19 @@ public class Entities {
     }
 
     protected void purgeProjectiles() {
-        ArrayList<Projectile> projectileListBuffer = new ArrayList<Projectile>();
-        for (Projectile p : projectileList) {
-            if ((p.getMinX() < -100 || p.getMinX() > 1000) || (p.getMinY() < -100 || p.getMinY() > 1000)) {
 
-            } else {                                                    // Create a new list of in-bounds projectiles,
-                p.setProjectileIndex(projectileListBuffer.size());     // Purge projectileList, then repopulate it
-                projectileListBuffer.add(p);                          // with in-bounds projectiles list.
+        ArrayList<Projectile> projectileListBuffer = new ArrayList<Projectile>();
+
+        for (Projectile p : projectileList) {
+            if (!((p.getMaxX() < 0 || p.getMinX() > game.gui.FRAME_WIDTH) || (p.getMaxY() < 0 || // If out of bounds,
+                    p.getMinY() > game.gui.FRAME_HEIGHT))) {
+
+                p.setProjectileIndex(projectileListBuffer.size());     // reset projectile's index,
+                projectileListBuffer.add(p);                          // add projectile to bufferList,
             }
         }
-        projectileList.removeAll(projectileList);
-        projectileList.addAll(projectileListBuffer);
+        projectileList.removeAll(projectileList);              // remove contents of projectileList,
+        projectileList.addAll(projectileListBuffer);        // add contents of bufferList to projectileList.
     }
 
     protected void runRoutines() {
@@ -57,15 +59,18 @@ public class Entities {
     }
 
     protected void createEnemy1(int minX, int minY) {
+
         addVesselToList(new Vessel(minX, minY,5, 2,
                 50, imageLoader.getImage("enemyIMG"), true) {
+
             String direction = "right";
             int frameWidth = game.gui.FRAME_WIDTH;
+
             @Override
             protected void routine() {
 
-                if (getMaxX() == frameWidth && direction == "right") {
-                    direction = "left";
+                if (getMaxX() == frameWidth && direction == "right") {  // Moves right, hits boundary,
+                    direction = "left";                                // moves left, hits boundary, moves right, etc.
                 } else if (getMaxX() < frameWidth && direction == "right") {
                     Movement.moveE(this, 2);
                 } else if (getMinX() == 0 && direction == "left"){
@@ -78,9 +83,6 @@ public class Entities {
                 }
             }
         });
-
-        System.out.println(vesselList.get(1).getSprite().getWidth());
-        System.out.println(vesselList.get(0).getSprite().getWidth());
 
     }
 }

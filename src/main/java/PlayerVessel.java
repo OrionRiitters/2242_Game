@@ -19,7 +19,6 @@ public class PlayerVessel extends Vessel {
         super(minX, minY, speed, collideDamage, health, sprite, active);
 
         this.game = game;
-        this.
 
         imageLoader = game.imageLoader;
         entities = game.entities;
@@ -28,7 +27,6 @@ public class PlayerVessel extends Vessel {
         keyUp = false;
         keyDown = false;
         keySpace = false;
-
 
     }
 
@@ -80,22 +78,18 @@ public class PlayerVessel extends Vessel {
     protected void routine() {
 
         if (isKeyLeft()) {
-            setMinX(getMinX() - 2); // Move left
-            setMaxX(getMaxX() - 2);
+            Movement.moveW(this, getSpeed());
         }
         if (isKeyRight()) {
-            setMinX(getMinX() + 2); // Move right
-            setMaxX(getMaxX() + 2);
+            Movement.moveE(this, getSpeed());
         }
         if (isKeyUp()) {
-            setMinY(getMinY() - 2); // Move up
-            setMaxY(getMaxY() - 2);
+            Movement.moveN(this, getSpeed());
         }
         if (isKeyDown()) {
-            setMinY(getMinY() + 2); // Move down
-            setMaxY(getMaxY() + 2);
+            Movement.moveS(this, getSpeed());
         }
-        if (isKeySpace()) { // Call this object's 'fire' method on its projectile object
+        if (isKeySpace()) { // Call this object's 'fire' method
             fire();
         }
 
@@ -103,21 +97,23 @@ public class PlayerVessel extends Vessel {
 
     private void initializeProjectile() {  // This creates two new projectiles and adds them to entities.projectilesList
 
-        entities.addProjectileToList(new Projectile(getMinX(), getMinY() + 9, 2,
+        System.out.println(entities.projectileList.size());
+
+        entities.addProjectileToList(new Projectile(getMinX(), getMinY() + 9, 4,
                 5, game.imageLoader.getImage("projectileIMG"), true, getVesselID(), game) {
 
             @Override
             public void routine() {
-                setMinY(getMinY() - 4);
+                Movement.moveN(this, getSpeed());
             }
 
         });
-        entities.addProjectileToList(new Projectile(getMinX() + 28, getMinY() + 9,2,
+        entities.addProjectileToList(new Projectile(getMinX() + 28, getMinY() + 9,4,
                 5, game.imageLoader.getImage("projectileIMG"), true, getVesselID(), game) {
 
             @Override
             public void routine() {
-                setMinY(getMinY() - 4);
+                Movement.moveN(this, getSpeed());
             }
         });
     }

@@ -15,6 +15,7 @@ public class Game {
     GUI gui;
     Entities entities;
     LevelOne levelOne;
+    Collisions collisions;
 
 
 
@@ -27,6 +28,7 @@ public class Game {
         gui = new GUI(game);
         entities = new Entities(game);
         levelOne = new LevelOne(game);
+        collisions = new Collisions(game);
 
         levelOne.initializeLevel();
         gui.initialize();
@@ -36,7 +38,7 @@ public class Game {
             delta += timeStamp - lastFrameTimeMS; // Delta = this timestamp - last timestamp + remainder of
             lastFrameTimeMS = timeStamp;           // delta - timeStep
 
-            while (delta >= timeStep) {         // Runs one frame, creates new delta from remainder of delta
+            while (delta >= timeStep) {         // Runs one frame, creates new delta from remainder of old delta
                 update();
                 delta -= timeStep;
             }
@@ -46,12 +48,12 @@ public class Game {
     private void update() { // Call functions to update game here. This is called once every frame
         entities.runRoutines();
         destroyOOBProjectiles();
-        gui.moveIt();
+        gui.frame.repaint();
     }
 
-    protected void destroyOOBProjectiles() { // After 16 frames, destroy all projectiles out of bounds
+    protected void destroyOOBProjectiles() { // After 16 frames, destroy all projectiles that are out of bounds
         destroyProjectilesAccum++;
-        if (destroyProjectilesAccum == 16) {
+        if (destroyProjectilesAccum == 16) { //TODO: Stick this in entities
             entities.purgeProjectiles();
             destroyProjectilesAccum = 0;
         }

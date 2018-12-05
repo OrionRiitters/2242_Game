@@ -12,7 +12,7 @@ public class Vessel extends Entity {
         super(minX, minY, speed, collideDamage, sprite, active);
 
         this.health = health;
-        vesselID = nextVesselID; // vesselID's will be used to associated vessels with their projectiles
+        vesselID = nextVesselID; // vesselID's will be used to associate vessels with their projectiles
         nextVesselID++;
     }
 
@@ -30,11 +30,11 @@ public class Vessel extends Entity {
 
     @Override
     protected void collide(Vessel v) {
-        v.setHealth(v.getHealth() - v.getCollideDamage());
+        v.setHealth(v.getHealth() - getCollideDamage());
     }
 
     protected void routine(){
-    //TODO Implement this
+        // Override this when instantiating a Vessel
     }
 
 }

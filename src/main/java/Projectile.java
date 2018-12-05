@@ -35,8 +35,8 @@ public class Projectile extends Entity {
         v.setHealth(v.getHealth() - v.getCollideDamage());
     }
 
-    @Override
+
     protected void routine() {
-        //@TODO Implement this
+        // Override this when instantiating a Projectile
     }
 }

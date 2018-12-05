@@ -15,9 +15,6 @@ final public class GUI extends JFrame implements KeyListener {
     JFrame frame;
     DrawPanel drawPanel;
 
-    private int oneX = 7;
-    private int oneY = 7;
-
     Game game;
     Entities entities;
     ImageLoader imageLoader;
@@ -47,12 +44,13 @@ final public class GUI extends JFrame implements KeyListener {
     }
 
     class DrawPanel extends JPanel {
-        BufferedImage player = entities.getPlayerVessel().getSprite(); // Grab playerShip image
-        File f = new File("images", "Background.png");
+
         BufferedImage background = imageLoader.getImage("backgroundIMG");
 
         public void paintComponent(Graphics g) { // Paints background, then vessels, then projectiles
+
             g.drawImage(background, 0, 0, null);
+
             for (Vessel v : entities.vesselList) {
                 g.drawImage(v.getSprite(), v.getMinX(), v.getMinY(), null);
             }
@@ -64,8 +62,6 @@ final public class GUI extends JFrame implements KeyListener {
     }
 
     protected void moveIt() {
-        oneX = entities.getPlayerVessel().getMinX();
-        oneY = entities.getPlayerVessel().getMinY();
         frame.repaint();
     }
 
