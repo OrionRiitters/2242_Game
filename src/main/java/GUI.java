@@ -12,36 +12,30 @@ final public class GUI extends JFrame implements KeyListener {
     JFrame frame;
     DrawPanel drawPanel;
 
-    ImageLoader imageLoader = new ImageLoader();
-    File file = new File("images", "arrow.png");
-
     private int oneX = 7;
     private int oneY = 7;
 
-    boolean up = false;
-    boolean down = true;
-    boolean left = false;
-    boolean right = true;
-
     Game game;
     Entities entities;
+    ImageLoader imageLoader;
 
     GUI(Game game) {
         this.game = game;
     }
 
-    public void initialize()
-    {
+    public void initialize() {
+
         frame = this; // Methods interfacing with KeyListener interface must use 'this' instead of 'frame'.
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
+        imageLoader = game.imageLoader;
         entities = game.entities;
         drawPanel = new DrawPanel();
 
         frame.getContentPane().add(BorderLayout.CENTER, drawPanel);
 
         frame.setResizable(false);
-        frame.setSize(1000, 1000);
+        frame.setSize(640, 480);
         frame.setLocationByPlatform(true);
         frame.setVisible(true);
 
@@ -51,13 +45,19 @@ final public class GUI extends JFrame implements KeyListener {
     }
 
     class DrawPanel extends JPanel {
-        BufferedImage image = entities.getPlayerVessel().getSprite(); // Grab playerShip image
+        BufferedImage player = entities.getPlayerVessel().getSprite(); // Grab playerShip image
+        File f = new File("images", "Background.png");
+        BufferedImage background = imageLoader.getImage("backgroundIMG");
 
         public void paintComponent(Graphics g) {
-            g.setColor(Color.WHITE);
-            g.fillRect(6, 6, this.getWidth() - 12, this.getHeight() - 12);
-            g.setColor(Color.BLACK);
-            g.drawImage(image, oneX, oneY, null);
+            g.drawImage(background, 0, 0, null);
+            for (Vessel v : entities.vesselList) {
+                g.drawImage(v.getSprite(), v.getMinX(), v.getMinY(), null);
+            }
+
+            for (Projectile p : entities.projectileList) {
+                g.drawImage(p.getSprite(), p.getMinX(), p.getMinY(), null);
+            }
         }
     }
 

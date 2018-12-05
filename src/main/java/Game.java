@@ -11,11 +11,14 @@ public class Game {
     private float moveBuffer = 0; // Used to control screen-wide movement speed
 
     Entities entities = new Entities();
+    ImageLoader imageLoader = new ImageLoader();
     GUI gui;
 
 
     public static void main(String[] args) {
         Game game = new Game();
+        LevelOne levelOne = new LevelOne(game);
+        levelOne.initializeLevel();
         game.mainLoop(game);
     }
 
@@ -39,9 +42,12 @@ public class Game {
                                 // Call functions to update game here. This is called once every frame
         gui.moveIt();
 
-        entities.getPlayerVessel().routine();      // @TODO Maybe put playerShip into entitiesList?
-        for (Entity e : entities.entitiesList) {
-            e.routine();                         // This just runs routines to update entity attributes
+        for (Vessel v : entities.vesselList) {
+            v.routine();                         // This just runs routines to update entity attributes
+        }
+
+        for (Projectile p : entities.projectileList) {
+            p.routine();
         }
     }
 }

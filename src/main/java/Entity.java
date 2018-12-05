@@ -9,14 +9,16 @@ public abstract class Entity { // This abstract class will contain Vessel and Pr
     private int speed;
     private int collideDamage;
     private BufferedImage sprite;
+    private boolean active;
 
-    public Entity(int minX, int minY, int maxX, int maxY, int speed, int collideDamage, BufferedImage sprite) {
+    public Entity(int minX, int minY, int maxX, int maxY, int speed, int collideDamage, BufferedImage sprite, boolean active) {
         this.minX = minX;
         this.minY = minY;
         this.maxX = maxX;
         this.maxY = maxY;
         this.collideDamage = collideDamage;
         this.sprite = sprite;
+        this.active = active;
     }
     public int getMinX() {
         return minX;
@@ -73,7 +75,7 @@ public abstract class Entity { // This abstract class will contain Vessel and Pr
         return collideDamage;
     }
 
-    protected abstract void collide(Entity e); // Implement this in child classes
+    protected abstract void collide(Vessel v); // Implement this in child classes
 
     protected abstract void routine(); // Implement this in child classes
 

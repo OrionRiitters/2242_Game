@@ -3,17 +3,18 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class ImageLoader {
                                         // This will hold all images
-    private static ArrayList<BufferedImage> images = new ArrayList<BufferedImage>();
+    private HashMap<String, BufferedImage> images = new HashMap<String, BufferedImage>();
 
-    public static BufferedImage getImage(int i) {
-        return images.get(i);
+
+    protected BufferedImage getImage(String s) {
+        return images.get(s);
     }
 
-
-    public static BufferedImage loadImage(File f) {  // Returns BufferedImage found from File f
+    private BufferedImage loadImage(File f) {  // Returns BufferedImage found from File f
         BufferedImage img;
         try {
             img = ImageIO.read(f);
@@ -24,10 +25,10 @@ public class ImageLoader {
         }
     }
 
-    public static void addImageToArray(File f) {  // Adds image from File f to images ArrayList
+    protected void addImageToHashMap(String s, File f) {  // Adds image from File f to images ArrayList
         try {
             BufferedImage newImage = loadImage(f);
-            images.add(newImage);
+            images.put(s, newImage);
         } catch (NullPointerException exc) {exc.printStackTrace();}
     }
 

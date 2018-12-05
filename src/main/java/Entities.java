@@ -1,20 +1,28 @@
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class Entities {  //TODO: This class will need to be re-worked. Right now it is a bunch of
                         // workarounds meant to temporarily solve the problem of working with entities
 
-    File f = new File("images", "arrow.png");
 
-    public static ArrayList<Entity> entitiesList = new ArrayList<Entity>();
+    public ArrayList<Vessel> vesselList = new ArrayList<Vessel>();
+    public ArrayList<Projectile> projectileList = new ArrayList<Projectile>();
 
-    public Projectile projectile = new Projectile(20, 20, 40, 40, 2, 5,
-            ImageLoader.loadImage(f));
-
-    private PlayerVessel playerVessel = new PlayerVessel(50, 50, 100, 100,
-            5, 2, 100, projectile, ImageLoader.loadImage(f));
 
     public PlayerVessel getPlayerVessel() {
-        return playerVessel;
+        return (PlayerVessel) vesselList.get(0);
+    }
+
+    public Projectile getProjectile(Integer i){
+        return projectileList.get(i);
+    }
+
+    protected void addVesselToList(Vessel v) {
+        vesselList.add(v);
+    }
+
+    protected void addProjectileToList(Projectile p) {
+        projectileList.add(p);
     }
 }
