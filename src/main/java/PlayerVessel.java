@@ -96,32 +96,28 @@ public class PlayerVessel extends Vessel {
 
     }
 
-    private void initializeProjectile() {
-
+    private void initializeProjectile() {  // This creates two new projectiles and adds them to entities.projectilesList
 
         entities.addProjectileToList(new Projectile(getMinX(), getMinY() + 9, 40, 40, 2,
-                5, game.imageLoader.getImage("projectileIMG"), true, getVesselID()) {
+                5, game.imageLoader.getImage("projectileIMG"), true, getVesselID(), game) {
 
             @Override
             public void routine() {
                 setMinY(getMinY() - 4);
             }
-
 
         });
         entities.addProjectileToList(new Projectile(getMinX() + 28, getMinY() + 9, 40, 40, 2,
-                5, game.imageLoader.getImage("projectileIMG"), true, getVesselID()) {
+                5, game.imageLoader.getImage("projectileIMG"), true, getVesselID(), game) {
 
             @Override
             public void routine() {
                 setMinY(getMinY() - 4);
             }
-
-
         });
     }
 
-    protected void fire() {
+    protected void fire() { // Space out projectile initialization
         projectileAccum++;
 
         if (projectileAccum == PROJECTILE_SPACING) {

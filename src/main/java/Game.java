@@ -9,6 +9,7 @@ public class Game {
     private long lastFrameTimeMS = timeStamp;
     private double timeStep = (double) MS / (double) FPS; // 1000 ms / 60 FPS = 1 frame every 16.667 ms
     private float moveBuffer = 0; // Used to control screen-wide movement speed
+    private int destroyProjectilesAccum = 0;
 
     Entities entities = new Entities();
     ImageLoader imageLoader = new ImageLoader();
@@ -38,16 +39,17 @@ public class Game {
         }
     }
 
-    private void update() {
-                                // Call functions to update game here. This is called once every frame
+    private void update() { // Call functions to update game here. This is called once every frame
+        entities.runRoutines();
+        destroyOOBProjectiles();
         gui.moveIt();
+    }
 
-        for (Vessel v : entities.vesselList) {
-            v.routine();                         // This just runs routines to update entity attributes
-        }
-
-        for (Projectile p : entities.projectileList) {
-            p.routine();
+    protected void destroyOOBProjectiles() { // After 16 frames, destroy all projectiles out of bounds
+        destroyProjectilesAccum++;
+        if (destroyProjectilesAccum == 16) {
+            entities.purgeProjectiles();
+            destroyProjectilesAccum = 0;
         }
     }
 }
