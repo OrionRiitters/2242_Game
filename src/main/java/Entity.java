@@ -11,11 +11,11 @@ public abstract class Entity { // This abstract class will contain Vessel and Pr
     private BufferedImage sprite;
     private boolean active;
 
-    public Entity(int minX, int minY, int maxX, int maxY, int speed, int collideDamage, BufferedImage sprite, boolean active) {
+    public Entity(int minX, int minY, int speed, int collideDamage, BufferedImage sprite, boolean active) {
         this.minX = minX;
         this.minY = minY;
-        this.maxX = maxX;
-        this.maxY = maxY;
+        this.maxX = minX + sprite.getWidth();
+        this.maxY = minY + sprite.getWidth();
         this.collideDamage = collideDamage;
         this.sprite = sprite;
         this.active = active;

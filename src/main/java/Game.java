@@ -11,20 +11,24 @@ public class Game {
     private float moveBuffer = 0; // Used to control screen-wide movement speed
     private int destroyProjectilesAccum = 0;
 
-    Entities entities = new Entities();
     ImageLoader imageLoader = new ImageLoader();
     GUI gui;
+    Entities entities;
+    LevelOne levelOne;
+
 
 
     public static void main(String[] args) {
         Game game = new Game();
-        LevelOne levelOne = new LevelOne(game);
-        levelOne.initializeLevel();
         game.mainLoop(game);
     }
 
     private void mainLoop(Game game){ // Game loop, calculates when to call update()
         gui = new GUI(game);
+        entities = new Entities(game);
+        levelOne = new LevelOne(game);
+
+        levelOne.initializeLevel();
         gui.initialize();
 
         while(!exitGame) {

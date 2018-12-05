@@ -9,6 +9,9 @@ import javax.swing.JPanel;
 
 final public class GUI extends JFrame implements KeyListener {
 
+    final public int FRAME_WIDTH = 640;
+    final public int FRAME_HEIGHT = 480;
+
     JFrame frame;
     DrawPanel drawPanel;
 
@@ -35,12 +38,11 @@ final public class GUI extends JFrame implements KeyListener {
         frame.getContentPane().add(BorderLayout.CENTER, drawPanel);
 
         frame.setResizable(false);
-        frame.setSize(640, 480);
+        frame.setSize(FRAME_WIDTH, FRAME_HEIGHT);
         frame.setLocationByPlatform(true);
         frame.setVisible(true);
 
         addKeyListener(this);  // Set up key listener
-
 
     }
 
@@ -49,7 +51,7 @@ final public class GUI extends JFrame implements KeyListener {
         File f = new File("images", "Background.png");
         BufferedImage background = imageLoader.getImage("backgroundIMG");
 
-        public void paintComponent(Graphics g) {
+        public void paintComponent(Graphics g) { // Paints background, then vessels, then projectiles
             g.drawImage(background, 0, 0, null);
             for (Vessel v : entities.vesselList) {
                 g.drawImage(v.getSprite(), v.getMinX(), v.getMinY(), null);
@@ -83,6 +85,12 @@ final public class GUI extends JFrame implements KeyListener {
         else if (e.getKeyChar() == 'd') { game.entities.getPlayerVessel().setKeyRight(d); }
         else if (e.getKeyChar() == 'w') { game.entities.getPlayerVessel().setKeyUp(w); }
         else if (e.getKeyChar() == 's') { game.entities.getPlayerVessel().setKeyDown(s); }
-        else if (e.getKeyChar() == ' ') { game.entities.getPlayerVessel().setKeySpace(space); }
+        else if (e.getKeyChar() == ' ') {
+            game.entities.getPlayerVessel().setKeySpace(space); // This block allows playerVessel's 'fire' method to
+            if (space == false) {                              // instantiate projectiles immediately. See PlayerVessel
+                PlayerVessel playerVessel = (PlayerVessel) entities.vesselList.get(0);
+                playerVessel.setProjectileAccum(playerVessel.PROJECTILE_SPACING - 1);
+            }
+        }
     }
 }

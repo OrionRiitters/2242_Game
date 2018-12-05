@@ -7,10 +7,10 @@ public class Projectile extends Entity {
     Game game;
     Entities entities;
 
-    public Projectile(int minX, int minY, int maxX, int maxY, int speed, int collideDamage, BufferedImage sprite,
+    public Projectile(int minX, int minY, int speed, int collideDamage, BufferedImage sprite,
                       boolean active, int vesselID, Game game) {
 
-        super(minX, minY, maxX, maxY, speed, collideDamage, sprite, active);
+        super(minX, minY, speed, collideDamage, sprite, active);
         this.vesselID = vesselID;
         this.game = game;
         entities = game.entities;

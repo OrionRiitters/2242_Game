@@ -24,9 +24,11 @@ public class LevelOne {
 
     private void initializeEntities(){
 
-        entities.addVesselToList(new PlayerVessel(50, 50, 100, 100, 5,
+        entities.addVesselToList(new PlayerVessel(50, 300, 5,
                 2, 100, imageLoader.getImage("playerVesselIMG"), true, game));
-
+        entities.createEnemy1(20, 20);
+        entities.createEnemy1(50, 50);
+        entities.createEnemy1(80, 80);
 
     }
 

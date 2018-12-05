@@ -8,17 +8,18 @@ public class PlayerVessel extends Vessel {
     private boolean keyDown;
     private boolean keySpace;
     final int PROJECTILE_SPACING = 10;
-    int projectileAccum = 0;
+    private int projectileAccum = 0;
     Game game;
     Entities entities;
     ImageLoader imageLoader;
 
-    public PlayerVessel(int minX, int minY, int maxX, int maxY, int speed, int collideDamage, int health,
+    public PlayerVessel(int minX, int minY, int speed, int collideDamage, int health,
                         BufferedImage sprite, boolean active, Game game) {
 
-        super(minX, minY, maxX, maxY, speed, collideDamage, health, sprite, active);
+        super(minX, minY, speed, collideDamage, health, sprite, active);
 
         this.game = game;
+        this.
 
         imageLoader = game.imageLoader;
         entities = game.entities;
@@ -29,6 +30,10 @@ public class PlayerVessel extends Vessel {
         keySpace = false;
 
 
+    }
+
+    public void setProjectileAccum(int i) {
+        projectileAccum = i;
     }
 
     public void setKeyLeft(boolean keyLeft) {
@@ -98,7 +103,7 @@ public class PlayerVessel extends Vessel {
 
     private void initializeProjectile() {  // This creates two new projectiles and adds them to entities.projectilesList
 
-        entities.addProjectileToList(new Projectile(getMinX(), getMinY() + 9, 40, 40, 2,
+        entities.addProjectileToList(new Projectile(getMinX(), getMinY() + 9, 2,
                 5, game.imageLoader.getImage("projectileIMG"), true, getVesselID(), game) {
 
             @Override
@@ -107,7 +112,7 @@ public class PlayerVessel extends Vessel {
             }
 
         });
-        entities.addProjectileToList(new Projectile(getMinX() + 28, getMinY() + 9, 40, 40, 2,
+        entities.addProjectileToList(new Projectile(getMinX() + 28, getMinY() + 9,2,
                 5, game.imageLoader.getImage("projectileIMG"), true, getVesselID(), game) {
 
             @Override
@@ -124,6 +129,10 @@ public class PlayerVessel extends Vessel {
             initializeProjectile();
             projectileAccum = 0;
         }
+    }
+
+    private void propel(int x, int y) {
+
     }
 
 }
