@@ -47,6 +47,7 @@ public class Game {
 
     private void update() { // Call functions to update game here. This is called once every frame
         entities.runRoutines();
+        collisions.runAllCollisions();
         destroyOOBProjectiles();
         gui.frame.repaint();
     }
@@ -56,6 +57,7 @@ public class Game {
         if (destroyProjectilesAccum == 16) { //TODO: Stick this in entities
             entities.purgeProjectiles();
             destroyProjectilesAccum = 0;
+
         }
     }
 }

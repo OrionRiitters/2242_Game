@@ -97,8 +97,6 @@ public class PlayerVessel extends Vessel {
 
     private void initializeProjectile() {  // This creates two new projectiles and adds them to entities.projectilesList
 
-        System.out.println(entities.projectileList.size());
-
         entities.addProjectileToList(new Projectile(getMinX(), getMinY() + 9, 4,
                 5, game.imageLoader.getImage("projectileIMG"), true, getVesselID(), game) {
 
