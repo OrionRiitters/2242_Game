@@ -10,6 +10,8 @@ public class Entities {
     public ArrayList<Vessel> vesselList = new ArrayList<Vessel>(); // Lists to contain all entities
     public ArrayList<Projectile> projectileList = new ArrayList<Projectile>();
 
+    private int destroyProjectilesAccum = 0;
+
 
     public Entities(Game game) {
         this.game = game;
@@ -35,17 +37,19 @@ public class Entities {
     protected void purgeProjectiles() {
 
         ArrayList<Projectile> projectileListBuffer = new ArrayList<Projectile>();
+        ArrayList<Projectile> projectileListCopy = new ArrayList<Projectile>(projectileList); // Used for projectileList.removeAll() function laterd
 
         for (Projectile p : projectileList) {
             if (!((p.getMaxX() < 0 || p.getMinX() > game.gui.FRAME_WIDTH) || (p.getMaxY() < 0 || // If out of bounds,
-                    p.getMinY() > game.gui.FRAME_HEIGHT))) {
+                    p.getMinY() > game.gui.FRAME_HEIGHT)) && p.getActive()) { // or if inactive,
 
                 p.setProjectileIndex(projectileListBuffer.size());     // reset projectile's index,
                 projectileListBuffer.add(p);                          // add projectile to bufferList,
             }
         }
-        projectileList.removeAll(projectileList);              // remove contents of projectileList,
+        projectileList.removeAll(projectileListCopy);              // remove contents of projectileList,
         projectileList.addAll(projectileListBuffer);        // add contents of bufferList to projectileList.
+        System.out.println(projectileList.size());
     }
 
     protected void runRoutines() {
@@ -84,5 +88,15 @@ public class Entities {
             }
         });
 
+    }
+    protected void delayedProjectilePurging() { // After 16 frames, purge all projectiles that are out of bounds
+
+        destroyProjectilesAccum++;          // Out of use at the moment
+
+        if (destroyProjectilesAccum == 16) {
+            purgeProjectiles();
+            destroyProjectilesAccum = 0;
+
+        }
     }
 }

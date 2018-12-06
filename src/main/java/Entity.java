@@ -10,6 +10,7 @@ public abstract class Entity { // This abstract class will contain Vessel and Pr
     private int collideDamage;
     private BufferedImage sprite;
     private boolean active;
+    private String direction;
 
     public Entity(int minX, int minY, int speed, int collideDamage, BufferedImage sprite, boolean active) {
         this.minX = minX;
@@ -41,9 +42,22 @@ public abstract class Entity { // This abstract class will contain Vessel and Pr
         return speed;
     }
 
+    public String getDirection() {
+        return direction;
+    }
+
     public BufferedImage getSprite() {
         return sprite;
     }
+
+    public boolean getActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
+    }
+
     public void setMinX(int minX) {
         this.minX = minX;
     }
@@ -63,6 +77,8 @@ public abstract class Entity { // This abstract class will contain Vessel and Pr
     public void setSpeed(int speed) {
         this.speed = speed;
     }
+
+    public void setDirection(String direction) {this.direction = direction;}
 
     public void setCollideDamage(int collideDamage) {
         this.collideDamage = collideDamage;

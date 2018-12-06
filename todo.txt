@@ -1,0 +1,19 @@
+12/6 -
+    Garbage collection of projectiles runs once a frame; This includes out of bounds projectiles. Performance could
+be improved by separating OOB projectiles and inactive projectiles. Collection would be performed on the former every
+x amount of frames while on the latter every single frame.
+     -
+     -
+    When playerVessel collides, its collide() method is called, but this method does not affect the position of the
+playerVessel. Need to write something that updates entities' "colliding" states, as well as a bounce() method.
+Although, come to think of it, the bounce() method may take care of everything and render the "colliding" state useless.
+Bounce() must somehow override an entity's routine(), read that entity's direction, and "bounce" the entity in the other
+direction.
+     -
+     -
+    Must create boundaries for playerVessel and investigate several buggy phenomena:
+1. When the frames are attempting to "catch up" (or at least I assume this is the case), the playerVessel can blip
+    offscreen.
+2. Sometimes (Under the assumption that this also happens when the frames are attempting to "catch up"), playerEntity
+    will be rendered unmovable (I forget if the "fire" method is still called when this happens). To allow further
+    movement, one must click on the JFrame.

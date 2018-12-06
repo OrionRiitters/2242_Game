@@ -13,20 +13,20 @@ public class Collisions {
     }
 
     public void runAllCollisions() {
+        Vessel playerVessel = entities.vesselList.get(0);
 
-        for (Vessel v : entities.vesselList) {
-            for (int i = v.getVesselID() +1 ; i < entities.vesselList.size() ; i++) {
-                v.collide(entities.vesselList.get(i));
-                if (checkCollision(v, entities.vesselList.get(i))) {
-                    entities.vesselList.get(i).collide(v);
-                    v.collide(entities.vesselList.get(i));
-                    System.out.println("VV-Collide!");
-                }
+        for (int i = 1 ; i < entities.vesselList.size() ; i++) {
+            if (checkCollision(playerVessel, entities.vesselList.get(i))) {
+                entities.vesselList.get(i).collide(playerVessel);
+                playerVessel.collide(entities.vesselList.get(i));
+                System.out.println("VV-Collide!");
             }
 
+
             for (Projectile p : entities.projectileList) {
-                if (checkCollision(v, p)) {
-                    p.collide(v);
+                if (checkCollision(entities.vesselList.get(i), p)) {
+                    p.collide(entities.vesselList.get(i));
+                    p.setActive(false);
                     System.out.println("PV-Collide");
                 }
             }

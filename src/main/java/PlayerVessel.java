@@ -77,21 +77,11 @@ public class PlayerVessel extends Vessel {
     @Override
     protected void routine() {
 
-        if (isKeyLeft()) {
-            Movement.moveW(this, getSpeed());
-        }
-        if (isKeyRight()) {
-            Movement.moveE(this, getSpeed());
-        }
-        if (isKeyUp()) {
-            Movement.moveN(this, getSpeed());
-        }
-        if (isKeyDown()) {
-            Movement.moveS(this, getSpeed());
-        }
-        if (isKeySpace()) { // Call this object's 'fire' method
-            fire();
-        }
+        if (isKeyLeft()) Movement.moveW(this, getSpeed());
+        if (isKeyRight()) Movement.moveE(this, getSpeed());
+        if (isKeyUp()) Movement.moveN(this, getSpeed());
+        if (isKeyDown()) Movement.moveS(this, getSpeed());
+        if (isKeySpace()) fire();
 
     }
 
@@ -125,7 +115,9 @@ public class PlayerVessel extends Vessel {
         }
     }
 
-    private void propel(int x, int y) {
+    @Override
+    protected void collide(Vessel v) {
+        v.setHealth(v.getHealth() - getCollideDamage());
 
     }
 
