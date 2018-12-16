@@ -8,9 +8,9 @@ public class Projectile extends Entity {
     Entities entities;
 
     public Projectile(int minX, int minY, int speed, int collideDamage, BufferedImage sprite,
-                      boolean active, int vesselID, Game game) {
+                      boolean active, int vesselID, Game game, boolean friendly, String direction) {
 
-        super(minX, minY, speed, collideDamage, sprite, active);
+        super(minX, minY, speed, collideDamage, sprite, active, friendly, direction);
         this.vesselID = vesselID;
         this.game = game;
         entities = game.entities;
@@ -32,7 +32,10 @@ public class Projectile extends Entity {
 
     @Override
     protected void collide(Vessel v) {
-        v.setHealth(v.getHealth() - v.getCollideDamage());
+
+        v.setHealth(v.getHealth() - getCollideDamage());
+        if (v.getHealth() <= 0) {v.setActive(false);}
+        System.out.println(v.getActive());
     }
 
 

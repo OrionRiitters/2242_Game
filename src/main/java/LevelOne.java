@@ -22,7 +22,7 @@ public class LevelOne {
     private void initializeEntities(){
 
         entities.addVesselToList(new PlayerVessel(50, 300, 6,
-                2, 100, imageLoader.getImage("playerVesselIMG"), true, game));
+                2, 100, imageLoader.getImage("playerVesselIMG"), true, game, true, Movement.N));
         entities.createEnemy1(20, 20);
         entities.createEnemy1(50, 50);
         entities.createEnemy1(80, 80);

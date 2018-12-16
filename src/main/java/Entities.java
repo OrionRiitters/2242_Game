@@ -37,7 +37,7 @@ public class Entities {
     protected void purgeProjectiles() {
 
         ArrayList<Projectile> projectileListBuffer = new ArrayList<Projectile>();
-        ArrayList<Projectile> projectileListCopy = new ArrayList<Projectile>(projectileList); // Used for projectileList.removeAll() function laterd
+        ArrayList<Projectile> projectileListCopy = new ArrayList<Projectile>(projectileList); // Used for projectileList.removeAll() function later.
 
         for (Projectile p : projectileList) {
             if (!((p.getMaxX() < 0 || p.getMinX() > game.gui.FRAME_WIDTH) || (p.getMaxY() < 0 || // If out of bounds,
@@ -49,12 +49,27 @@ public class Entities {
         }
         projectileList.removeAll(projectileListCopy);              // remove contents of projectileList,
         projectileList.addAll(projectileListBuffer);        // add contents of bufferList to projectileList.
-        System.out.println(projectileList.size());
+    }
+
+    protected void purgeVessels() {  // This does the same thing as purgeProjectiles, but purges vessels and
+                                    // only checks each vessels 'active' attribute, and not if it is OOB
+        ArrayList<Vessel> vesselListBuffer = new ArrayList<Vessel>();
+        ArrayList<Vessel> vesselListCopy = new ArrayList<Vessel>(vesselList);
+
+        for (Vessel v : vesselList) {
+            if (v.getActive()) {
+
+                v.setVesselID(vesselListBuffer.size());
+                vesselListBuffer.add(v);
+            }
+        }
+        vesselList.removeAll(vesselListCopy);
+        vesselList.addAll(vesselListBuffer);
     }
 
     protected void runRoutines() {
         for (Vessel v : vesselList) {
-            v.routine();                         // This just runs routines to update entity attributes
+            v.routine();
         }
 
         for (Projectile p : projectileList) {
@@ -64,39 +79,41 @@ public class Entities {
 
     protected void createEnemy1(int minX, int minY) {
 
-        addVesselToList(new Vessel(minX, minY,5, 2,
-                50, imageLoader.getImage("enemyIMG"), true) {
+        addVesselToList(new Vessel(minX, minY,2, 2,
+                50, imageLoader.getImage("enemyIMG"), true, false, Movement.E) {
 
-            String direction = "right";
+            //String direction = "right";
             int frameWidth = game.gui.FRAME_WIDTH;
+            int frameHeight = game.gui.FRAME_HEIGHT;
+
 
             @Override
-            protected void routine() {
-
-                if (getMaxX() == frameWidth && direction == "right") {  // Moves right, hits boundary,
-                    direction = "left";                                // moves left, hits boundary, moves right, etc.
-                } else if (getMaxX() < frameWidth && direction == "right") {
-                    Movement.moveE(this, 2);
-                } else if (getMinX() == 0 && direction == "left"){
-                    direction = "right";
-                    Movement.moveE(this, 2);
-                } else if (getMaxX() < frameWidth && direction == "left") {
-                    Movement.moveW(this, 2);
-                } else if (getMaxX() == frameWidth && direction == "left") {
-                    Movement.moveW(this, 2);
+            protected void routine() { // If ship is out of bounds, send it
+                boolean OOB = false;
+                if (getMaxX() > frameWidth) {
+                    Movement.moveW(this, getSpeed());
+                    OOB = true;
                 }
+                else if (getMinX() < 0) {
+                    Movement.moveE(this, getSpeed());
+                    OOB = true;
+                }
+                if (getMaxY() > frameHeight) {
+                    Movement.moveN(this, getSpeed());
+                    OOB = true;
+                }
+                else if (getMinY() < 0) {
+                    Movement.moveS(this, getSpeed());
+                    OOB = true;
+                }
+
+                if (!OOB) {
+                    Movement.move(this, this.getDirection());
+                }
+
             }
         });
 
     }
-    protected void delayedProjectilePurging() { // After 16 frames, purge all projectiles that are out of bounds
 
-        destroyProjectilesAccum++;          // Out of use at the moment
-
-        if (destroyProjectilesAccum == 16) {
-            purgeProjectiles();
-            destroyProjectilesAccum = 0;
-
-        }
-    }
 }

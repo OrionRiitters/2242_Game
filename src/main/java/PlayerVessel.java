@@ -12,13 +12,16 @@ public class PlayerVessel extends Vessel {
     Game game;
     Entities entities;
     ImageLoader imageLoader;
+    GUI gui;
 
     public PlayerVessel(int minX, int minY, int speed, int collideDamage, int health,
-                        BufferedImage sprite, boolean active, Game game) {
+                        BufferedImage sprite, boolean active, Game game, boolean friendly, String direction) {
 
-        super(minX, minY, speed, collideDamage, health, sprite, active);
+        super(minX, minY, speed, collideDamage, health, sprite, active, friendly, direction);
 
         this.game = game;
+        gui = game.gui;
+
 
         imageLoader = game.imageLoader;
         entities = game.entities;
@@ -75,20 +78,27 @@ public class PlayerVessel extends Vessel {
     }
 
     @Override
-    protected void routine() {
+    protected void routine() { // Move direction based on keys pressed and player's position relative to the
+                              // frame
 
-        if (isKeyLeft()) Movement.moveW(this, getSpeed());
-        if (isKeyRight()) Movement.moveE(this, getSpeed());
-        if (isKeyUp()) Movement.moveN(this, getSpeed());
-        if (isKeyDown()) Movement.moveS(this, getSpeed());
+        if (isKeyLeft()) Movement.moveW(this,
+                getMinX() > 0 ? getSpeed() : 0);
+        if (isKeyRight()) Movement.moveE(this,
+                getMaxX() < gui.FRAME_WIDTH ? getSpeed() : 0);
+        if (isKeyUp()) Movement.moveN(this,
+                getMinY() > 0 ? getSpeed() : 0);
+        if (isKeyDown()) Movement.moveS(this,
+                getMaxY() < gui.FRAME_HEIGHT ? getSpeed() : 0);
         if (isKeySpace()) fire();
+
 
     }
 
     private void initializeProjectile() {  // This creates two new projectiles and adds them to entities.projectilesList
 
         entities.addProjectileToList(new Projectile(getMinX(), getMinY() + 9, 4,
-                5, game.imageLoader.getImage("projectileIMG"), true, getVesselID(), game) {
+                5, game.imageLoader.getImage("projectileIMG"), true, getVesselID(), game, true,
+                            Movement.N) {
 
             @Override
             public void routine() {
@@ -97,7 +107,8 @@ public class PlayerVessel extends Vessel {
 
         });
         entities.addProjectileToList(new Projectile(getMinX() + 28, getMinY() + 9,4,
-                5, game.imageLoader.getImage("projectileIMG"), true, getVesselID(), game) {
+                5, game.imageLoader.getImage("projectileIMG"), true, getVesselID(), game, true,
+                            Movement.N) {
 
             @Override
             public void routine() {
@@ -118,6 +129,7 @@ public class PlayerVessel extends Vessel {
     @Override
     protected void collide(Vessel v) {
         v.setHealth(v.getHealth() - getCollideDamage());
+        if (getHealth() <= 0) {setActive(false);}
 
     }
 

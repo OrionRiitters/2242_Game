@@ -48,7 +48,12 @@ public class Game {
         entities.runRoutines();
         collisions.runAllCollisions();
         entities.purgeProjectiles();
+        entities.purgeVessels();
         gui.frame.repaint();
+    }
+
+    public void setExitGame(boolean b) {
+        exitGame = b;
     }
 
 
