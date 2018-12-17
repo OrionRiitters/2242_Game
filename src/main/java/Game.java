@@ -47,6 +47,7 @@ public class Game {
     private void update() { // Call functions to update game here. This is called once every frame
         entities.runRoutines();
         collisions.runAllCollisions();
+        collisions.runPlayerToProjectileCollisions(entities.getPlayerVessel(), entities.projectileList);
         entities.purgeProjectiles();
         entities.purgeVessels();
         gui.frame.repaint();

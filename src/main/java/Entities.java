@@ -85,11 +85,15 @@ public class Entities {
             //String direction = "right";
             int frameWidth = game.gui.FRAME_WIDTH;
             int frameHeight = game.gui.FRAME_HEIGHT;
+            int frame = 0;
 
 
             @Override
-            protected void routine() { // If ship is out of bounds, send it
+            protected void routine() { // If ship is out of bounds, send it back in bounds
+
                 boolean OOB = false;
+                frame = frame <= 32 ? frame + 1 : 0;
+
                 if (getMaxX() > frameWidth) {
                     Movement.moveW(this, getSpeed());
                     OOB = true;
@@ -111,7 +115,28 @@ public class Entities {
                     Movement.move(this, this.getDirection());
                 }
 
+                if (frame == 0) {
+                    initializeProjectile();
+                }
+
+
             }
+
+            @Override
+            protected void initializeProjectile() {  // This creates two new projectiles and adds them to entities.projectilesList
+
+                addProjectileToList(new Projectile(getMinX() + 14, getMaxY() - 5, 4,
+                        5, game.imageLoader.getImage("enemyProjectileIMG"), true, getVesselID(), game, false,
+                        Movement.N) {
+
+                    @Override
+                    public void routine() {
+                        Movement.moveS(this, getSpeed());
+                    }
+
+                });
+            }
+
         });
 
     }

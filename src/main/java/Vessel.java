@@ -37,5 +37,6 @@ public class Vessel extends Entity {
     protected void routine(){
         // Override this when instantiating a Vessel
     }
+    protected void initializeProjectile() {}
 
 }

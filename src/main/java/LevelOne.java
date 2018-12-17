@@ -38,6 +38,7 @@ public class LevelOne {
         imageLoader.addImageToHashMap("reversePropelIMG", new File("images", "ReversePropel.png"));
         imageLoader.addImageToHashMap("rightPropelIMG", new File("images", "RightPropel.png"));
         imageLoader.addImageToHashMap("enemyIMG", new File("images", "Enemy.png"));
+        imageLoader.addImageToHashMap("enemyProjectileIMG", new File("images", "EnemyProjectile.png"));
     }
 
 

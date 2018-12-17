@@ -12,7 +12,7 @@ public class Collisions {
         entities = game.entities;
     }
     public void runAllCollisions() {
-        Vessel playerVessel = entities.vesselList.get(0);
+        Vessel playerVessel = entities.getPlayerVessel();
 
         for (int i = 1 ; i < entities.vesselList.size() ; i++) {
             if (checkCollision(playerVessel, entities.vesselList.get(i))) {
@@ -23,7 +23,7 @@ public class Collisions {
 
 
             for (Projectile p : entities.projectileList) {
-                if (checkCollision(entities.vesselList.get(i), p)) {
+                if (checkCollision(entities.vesselList.get(i), p) && p.isFriendly()) {
                     p.collide(entities.vesselList.get(i));
                     p.setActive(false);
                 }
