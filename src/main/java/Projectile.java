@@ -35,7 +35,6 @@ public class Projectile extends Entity {
 
         v.setHealth(v.getHealth() - getCollideDamage());
         if (v.getHealth() <= 0) {v.setActive(false);}
-        System.out.println(v.getActive());
     }
 
 

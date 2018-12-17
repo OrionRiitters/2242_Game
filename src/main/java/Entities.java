@@ -92,7 +92,7 @@ public class Entities {
             protected void routine() { // If ship is out of bounds, send it back in bounds
 
                 boolean OOB = false;
-                frame = frame <= 32 ? frame + 1 : 0;
+                frame = frame <= 64 ? frame + 1 : 0;
 
                 if (getMaxX() > frameWidth) {
                     Movement.moveW(this, getSpeed());
@@ -136,6 +136,85 @@ public class Entities {
 
                 });
             }
+
+        });
+
+    }
+
+    protected void createEnemy2(int minX, int minY) {
+
+        addVesselToList(new Vessel(minX, minY,2, 2,
+                100, imageLoader.getImage("enemy2IMG"), true, false, Movement.E) {
+
+            //String direction = "right";
+            int frameWidth = game.gui.FRAME_WIDTH;
+            int frameHeight = game.gui.FRAME_HEIGHT;
+            int frame = 0;
+
+
+            @Override
+            protected void routine() { // If ship is out of bounds, send it back in bounds
+
+                boolean OOB = false;
+                frame = frame <= 255 ? frame + 1 : 0;
+
+                if (getMaxX() > frameWidth) {
+                    Movement.moveW(this, getSpeed());
+                    OOB = true;
+                }
+                else if (getMinX() < 0) {
+                    Movement.moveE(this, getSpeed());
+                    OOB = true;
+                }
+                if (getMaxY() > frameHeight) {
+                    Movement.moveN(this, getSpeed());
+                    OOB = true;
+                }
+                else if (getMinY() < 0) {
+                    Movement.moveS(this, getSpeed());
+                    OOB = true;
+                }
+
+                if (!OOB && frame != 256) {
+                    Movement.move(this, this.getDirection());
+                } else if (!OOB) {
+                    Movement.move(this, Movement.randomDirection());
+                }
+
+                if (frame % 31 == 0) {
+                    initializeProjectile();
+                }
+
+
+            }
+
+            @Override
+            protected void initializeProjectile() {  // This creates two new projectiles and adds them to entities.projectilesList
+
+                addProjectileToList(new Projectile(getMinX() + 14, getMaxY() - 5, 5,
+                        5, game.imageLoader.getImage("enemyProjectileIMG"), true, getVesselID(), game, false,
+                        Movement.S) {
+
+                    @Override
+                    public void routine() {
+                        Movement.moveS(this, getSpeed());
+                    }
+
+                });
+
+                addProjectileToList(new Projectile(getMinX() + 20, getMaxY() - 5, 5,
+                        5, game.imageLoader.getImage("enemyProjectileIMG"), true, getVesselID(), game, false,
+                        Movement.S) {
+
+                    @Override
+                    public void routine() {
+                        Movement.moveS(this, getSpeed());
+                    }
+
+                });
+            }
+
+
 
         });
 

@@ -58,12 +58,12 @@ public class Collisions {
     }
 
 
-    public boolean checkCollision(Entity e1, Entity e2) {
+    public boolean checkCollision(Entity e1, Entity e2) { // Check if two entities are colliding
         return ((e1.getMaxX() >= e2.getMinX() && e1.getMaxY() >= e2.getMinY()) &&
         (e1.getMinX() <= e2.getMaxX() && e1.getMinY() <= e2.getMaxY()));
     }
 
-    public void bounce(Entity e1, Entity e2) {
+    public void bounce(Entity e1, Entity e2) {     // Moves two entities away from one another
         String relativeDirection = getRelativeDirection(e1, e2);
         Movement.move(e1, relativeDirection);
         Movement.move(e2, Movement.getOppositeDirection(relativeDirection));
@@ -83,9 +83,9 @@ public class Collisions {
         return direction;
     }
 
-    private float getEntityMidX(Entity entity) {                // These two functions could maybe be attributes
+    private float getEntityMidX(Entity entity) {                // Used to get relative direction
         return (((float)entity.getMaxX()) - ((float)entity.getMinX()) / 2f) +
-                (float) entity.getMinX(); // of the actual entity objects
+                (float) entity.getMinX();
     }
 
     private float getEntityMidY(Entity entity) {

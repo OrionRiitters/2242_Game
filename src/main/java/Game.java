@@ -50,6 +50,8 @@ public class Game {
         collisions.runPlayerToProjectileCollisions(entities.getPlayerVessel(), entities.projectileList);
         entities.purgeProjectiles();
         entities.purgeVessels();
+        levelOne.updateTime(timeStamp);
+        levelOne.checkReleases();
         gui.frame.repaint();
     }
 

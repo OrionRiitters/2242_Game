@@ -97,5 +97,29 @@ public class Movement {
         else return SE;
     }
 
+    protected static String randomDirection() throws NullPointerException {
+        int randomNum = (int) Math.ceil(Math.random() * 8f);
+        switch(randomNum) {
+            case(1):
+                return N;
+            case(2):
+                return NE;
+            case(3):
+                return E;
+            case(4):
+                return SE;
+            case(5):
+                return S;
+            case(6):
+                return SW;
+            case(7):
+                return W;
+            case(8):
+                return NW;
+            default:
+                return null;
+        }
+    }
+
 
 }
