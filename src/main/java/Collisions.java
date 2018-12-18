@@ -4,21 +4,24 @@ public class Collisions {
 
     Game game;
     Entities entities;
+    StatisticsManager statisticsManager;
 
     ArrayList<Vessel> checkedVessels = new ArrayList<Vessel>();
 
     public Collisions(Game game) {
         this.game = game;
         entities = game.entities;
+        statisticsManager = game.statisticsManager;
     }
     public void runAllCollisions() {
-        Vessel playerVessel = entities.getPlayerVessel();
-
+        Vessel playerVessel = entities.getPlayerVessel();  // This runs collisions between playerVessel and
+                                                         // vessels as well as between vessels and friendly projectiles
         for (int i = 1 ; i < entities.vesselList.size() ; i++) {
             if (checkCollision(playerVessel, entities.vesselList.get(i))) {
                 bounce(playerVessel, entities.vesselList.get(i));
                 entities.vesselList.get(i).collide(playerVessel);
                 playerVessel.collide(entities.vesselList.get(i));
+                statisticsManager.incrementHitsTaken();
             }
 
 
@@ -26,32 +29,21 @@ public class Collisions {
                 if (checkCollision(entities.vesselList.get(i), p) && p.isFriendly()) {
                     p.collide(entities.vesselList.get(i));
                     p.setActive(false);
+                    statisticsManager.incrementHitsGiven();
                 }
             }
         }
 
     }
-
-
+        // This method checks collisions between playerVessel and all unfriendly projectiles
     public void runPlayerToProjectileCollisions(Vessel vessel, ArrayList<Projectile> projectileList ) {
 
         for (int i = 0 ; i < entities.projectileList.size() ; i++) {
             Projectile projectile = projectileList.get(i);
             if (checkCollision(vessel, projectile) && !projectile.isFriendly()) {
                 projectile.collide(vessel);
-                projectile.setActive(false);
-            }
-        }
-
-    }
-
-    public void runEnemyToProjectileCollisions(Vessel vessel, ArrayList<Projectile> projectileList) {
-
-        for (int i = 0 ; i < entities.projectileList.size() ; i++) {
-            Projectile projectile = projectileList.get(i);
-            if (checkCollision(vessel, projectile) && projectile.isFriendly()) {
-                projectile.collide(vessel);
-                projectile.setActive(false);
+                projectile.setActive(projectile.isAlwaysActive());
+                statisticsManager.incrementHitsTaken();
             }
         }
 

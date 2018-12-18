@@ -9,10 +9,13 @@ public class PlayerVessel extends Vessel {
     private boolean keySpace;
     final int PROJECTILE_SPACING = 10;
     private int projectileAccum = 0;
+    private int maxHealth;
+
     Game game;
     Entities entities;
     ImageLoader imageLoader;
     GUI gui;
+    StatisticsManager statisticsManager;
 
     public PlayerVessel(int minX, int minY, int speed, int collideDamage, int health,
                         BufferedImage sprite, boolean active, Game game, boolean friendly, String direction) {
@@ -21,8 +24,9 @@ public class PlayerVessel extends Vessel {
 
         this.game = game;
         gui = game.gui;
+        maxHealth = health;
 
-
+        statisticsManager = game.statisticsManager;
         imageLoader = game.imageLoader;
         entities = game.entities;
         keyLeft = false;
@@ -32,6 +36,7 @@ public class PlayerVessel extends Vessel {
         keySpace = false;
 
     }
+
 
     public void setProjectileAccum(int i) {
         projectileAccum = i;
@@ -81,6 +86,9 @@ public class PlayerVessel extends Vessel {
     protected void routine() { // Move direction based on keys pressed and player's position relative to the
                               // frame
 
+        if (!getActive()) {
+            Game.exitGame = true;
+        }
         if (isKeyLeft()) Movement.moveW(this,
                 getMinX() > 0 ? getSpeed() : 0);
         if (isKeyRight()) Movement.moveE(this,
@@ -92,6 +100,7 @@ public class PlayerVessel extends Vessel {
         if (isKeySpace()) fire();
 
 
+
     }
 
     @Override
@@ -99,21 +108,44 @@ public class PlayerVessel extends Vessel {
 
         entities.addProjectileToList(new Projectile(getMinX(), getMinY() + 9, 4,
                 5, game.imageLoader.getImage("projectileIMG"), true, getVesselID(), game, true,
-                            Movement.N) {
+                            Movement.N, false) {
+
+            @Override
+            public void routine() {
+
+                Movement.moveN(this, getSpeed());
+
+            }
+
+            @Override
+            protected void collide(Vessel v) {
+
+                v.setHealth(v.getHealth() - getCollideDamage());
+                if (v.getHealth() <= 0 && v.getVesselID() != 0){
+                    v.setActive(false);
+                    statisticsManager.incrementHitsGiven();
+
+                }
+            }
+
+        });
+        entities.addProjectileToList(new Projectile(getMinX() + 28, getMinY() + 9,4,
+                5, game.imageLoader.getImage("projectileIMG"), true, getVesselID(), game, true,
+                            Movement.N, false) {
 
             @Override
             public void routine() {
                 Movement.moveN(this, getSpeed());
             }
 
-        });
-        entities.addProjectileToList(new Projectile(getMinX() + 28, getMinY() + 9,4,
-                5, game.imageLoader.getImage("projectileIMG"), true, getVesselID(), game, true,
-                            Movement.N) {
-
             @Override
-            public void routine() {
-                Movement.moveN(this, getSpeed());
+            protected void collide(Vessel v) {
+
+                v.setHealth(v.getHealth() - getCollideDamage());
+                if (v.getHealth() <= 0 && v.getVesselID() != 0){
+                    v.setActive(false);
+                    statisticsManager.incrementHitsGiven();
+                }
             }
         });
     }
@@ -124,13 +156,15 @@ public class PlayerVessel extends Vessel {
         if (projectileAccum == PROJECTILE_SPACING) {
             initializeProjectile();
             projectileAccum = 0;
+            statisticsManager.incrementShotsFired();
+            statisticsManager.incrementShotsFired();
         }
     }
 
     @Override
     protected void collide(Vessel v) {
         v.setHealth(v.getHealth() - getCollideDamage());
-        if (getHealth() <= 0) {setActive(false);}
+        if (getHealth() <= 0) {Game.exitGame = true;}
 
     }
 

@@ -1,10 +1,9 @@
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.BufferedImage;
-import java.io.File;
+import java.util.ConcurrentModificationException;
 
-import javax.swing.JFrame;
-import javax.swing.JPanel;
+import javax.swing.*;
 
 
 final public class GUI extends JFrame implements KeyListener {
@@ -14,6 +13,7 @@ final public class GUI extends JFrame implements KeyListener {
 
     JFrame frame;
     DrawPanel drawPanel;
+
 
     Game game;
     Entities entities;
@@ -26,18 +26,20 @@ final public class GUI extends JFrame implements KeyListener {
     public void initialize() {
 
         frame = this; // Methods interfacing with KeyListener interface must use 'this' instead of 'frame'.
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
         imageLoader = game.imageLoader;
         entities = game.entities;
-        drawPanel = new DrawPanel();
 
-        frame.getContentPane().add(BorderLayout.CENTER, drawPanel);
+        drawPanel = new DrawPanel();
 
         frame.setResizable(false);
         frame.setSize(FRAME_WIDTH, FRAME_HEIGHT);
         frame.setLocationByPlatform(true);
         frame.setVisible(true);
+        frame.getContentPane().add(drawPanel, BorderLayout.PAGE_START);
+
+        drawPanel.setSize(FRAME_WIDTH, FRAME_HEIGHT);
 
         addKeyListener(this);  // Set up key listener
 
@@ -48,22 +50,23 @@ final public class GUI extends JFrame implements KeyListener {
         BufferedImage background = imageLoader.getImage("backgroundIMG");
 
         public void paintComponent(Graphics g) { // Paints background, then vessels, then projectiles
+            try {
+                g.drawImage(background, 0, 0, null);
 
-            g.drawImage(background, 0, 0, null);
+                for (Vessel v : entities.vesselList) {
+                    g.drawImage(v.getSprite(), v.getMinX(), v.getMinY(), null);
+                }
 
-            for (Vessel v : entities.vesselList) {
-                g.drawImage(v.getSprite(), v.getMinX(), v.getMinY(), null);
-            }
-
-            for (Projectile p : entities.projectileList) {
-                g.drawImage(p.getSprite(), p.getMinX(), p.getMinY(), null);
-            }
+                for (Projectile p : entities.projectileList) {
+                    g.drawImage(p.getSprite(), p.getMinX(), p.getMinY(), null);
+                }
+            } catch (ConcurrentModificationException cme) {}
+         // Swing is not thread-safe, and being that the errors being thrown do not affect gameplay in a noticeable
+        // way, I am disregarding the exceptions for the time being. I am not showing the stacktrace because
+       // the console is being used as a menu in order to finish the game in time for presentation.
         }
     }
 
-    protected void moveIt() {
-        frame.repaint();
-    }
 
     public void keyTyped(KeyEvent e) {} // Must have this method because this class implements KeyListener
 

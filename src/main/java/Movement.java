@@ -98,7 +98,7 @@ public class Movement {
     }
 
     protected static String randomDirection() throws NullPointerException {
-        int randomNum = (int) Math.ceil(Math.random() * 8f);
+        int randomNum = (int) Math.ceil(Math.random() * 8f); // Create random number 1-8, return random direction
         switch(randomNum) {
             case(1):
                 return N;

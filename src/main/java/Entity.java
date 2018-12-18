@@ -18,7 +18,7 @@ public abstract class Entity { // This abstract class will contain Vessel and Pr
         this.minX = minX;
         this.minY = minY;
         this.maxX = minX + sprite.getWidth();
-        this.maxY = minY + sprite.getWidth();
+        this.maxY = minY + sprite.getHeight();
         this.collideDamage = collideDamage;
         this.sprite = sprite;
         this.active = active;
@@ -81,19 +81,7 @@ public abstract class Entity { // This abstract class will contain Vessel and Pr
         this.maxY = maxY;
     }
 
-    public void setSpeed(int speed) {
-        this.speed = speed;
-    }
-
     public void setDirection(String direction) {this.direction = direction;}
-
-    public void setCollideDamage(int collideDamage) {
-        this.collideDamage = collideDamage;
-    }
-
-    public void setSprite(BufferedImage sprite) {
-        this.sprite = sprite;
-    }
 
     public int getCollideDamage() {
         return collideDamage;

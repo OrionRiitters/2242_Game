@@ -4,7 +4,7 @@ public class Vessel extends Entity {
 
     private int health;
     private int vesselID;
-    private static int nextVesselID = 0;
+    public static int nextVesselID = 0;
 
     public Vessel(int minX, int minY, int speed, int collideDamage, int health,
                  BufferedImage sprite, boolean active, boolean friendly, String direction) {
